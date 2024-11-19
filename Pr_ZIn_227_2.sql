@@ -96,3 +96,68 @@ INSERT INTO public.reception (id_reception,doctor_id,pacient_id,date_reception) 
 	 ('9',4,8,'2024-11-05'),
 	 ('10',7,5,'2024-11-05'),
 	 ('1',2,1,'2024-11-05');
+		-- public.zarplata исходный текст
+
+CREATE OR REPLACE VIEW zarplata
+AS SELECT fio,
+    specialnost,
+    "Cost",
+    allocation,
+    "Cost" * allocation AS zarplata
+   FROM doctors;
+
+-- Permissions
+
+ALTER TABLE zarplata OWNER TO postgres;
+GRANT ALL ON TABLE zarplata TO postgres;
+
+
+-- public.zarplata_posle исходный текст
+
+CREATE OR REPLACE VIEW zarplata_posle
+AS SELECT fio,
+    specialnost,
+    "Cost",
+    allocation,
+    zarplata::numeric - zarplata::numeric * 0.13 AS zarplata
+   FROM zarplata;
+
+-- Permissions
+
+ALTER TABLE zarplata_posle OWNER TO postgres;
+GRANT ALL ON TABLE zarplata_posle TO postgres;
+
+
+
+
+-- Permissions
+
+GRANT ALL ON SCHEMA public TO pg_database_owner;
+GRANT USAGE ON SCHEMA public TO public;
+
+CREATE OR REPLACE VIEW zarplata
+AS SELECT fio,
+    specialnost,
+    "Cost",
+    allocation,
+    "Cost" * allocation AS zarplata
+   FROM doctors;
+
+-- Permissions
+
+ALTER TABLE zarplata OWNER TO postgres;
+GRANT ALL ON TABLE zarplata TO postgres;
+
+CREATE OR REPLACE VIEW zarplata_posle
+AS SELECT fio,
+    specialnost,
+    "Cost",
+    allocation,
+    zarplata::numeric - zarplata::numeric * 0.13 AS zarplata
+   FROM zarplata;
+
+-- Permissions
+
+ALTER TABLE zarplata_posle OWNER TO postgres;
+GRANT ALL ON TABLE zarplata_posle TO postgres;
+
